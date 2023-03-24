@@ -1,0 +1,78 @@
+<krpano>
+    <layer name="floormap_floormap01" url="image/floormap01.png" keep="true" handcursor="false" capture="false" align="lefttop" edge="lefttop" x="8" ox="0" y="38" scale="0.35" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floormap02" url="image/floormap02.png" keep="true" handcursor="false" capture="false" align="lefttop" edge="lefttop" x="8" ox="0" y="38" scale="0.35" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floormap03" url="image/floormap03.png" keep="true" handcursor="false" capture="false" align="lefttop" edge="lefttop" x="8" ox="0" y="38" scale="0.35" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floormap01_vr" url="image/floormap01.png" keep="true" handcursor="false" capture="false" edge="centertop" alpha="0.9" align="centertop" x="0" ox="90" y="6" scale="0.2" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floormap02_vr" url="image/floormap02.png" keep="true" handcursor="false" capture="false" edge="centertop" alpha="0.9" align="centertop" x="0" ox="90" y="6" scale="0.2" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floormap03_vr" url="image/floormap03.png" keep="true" handcursor="false" capture="false" edge="centertop" alpha="0.9" align="centertop" x="0" ox="90" y="6" scale="0.2" scalechildren="true" vr="true" visible="false" zorder="1" />
+
+    <layer name="floormap_floorspot_map01_spot1496246" style="floormap_common_style_mapspot" tooltip="å¤–è¦³" parent="floormap_floormap01" x="88" y="185" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/intro/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478174" style="floormap_common_style_mapspot" tooltip="ãƒªãƒ“ãƒ³ã‚°" parent="floormap_floormap02" x="207" y="126" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room01/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478175" style="floormap_common_style_mapspot" tooltip="ãƒ€ã‚¤ãƒ‹ãƒ³ã‚°" parent="floormap_floormap02" x="304" y="203" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room02/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478176" style="floormap_common_style_mapspot" tooltip="ã‚¹ã‚¿ãƒ‡ã‚£ãƒ¼ã‚³ãƒ¼ãƒŠãƒ¼" parent="floormap_floormap02" x="304" y="119" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room03/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478177" style="floormap_common_style_mapspot" tooltip="2F æ´‹å®¤" parent="floormap_floormap02" x="520" y="138" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room04/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478178" style="floormap_common_style_mapspot" tooltip="1F ç´æˆ¸" parent="floormap_floormap01" x="525" y="160" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room05/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478179" style="floormap_common_style_mapspot" tooltip="ï½¼ï½­ï½°ï½½ï¾žï½²ï¾ï½¸ï¾›ï½°ï½¸" parent="floormap_floormap01" x="284" y="163" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room06/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478180" style="floormap_common_style_mapspot" tooltip="çŽ„é–¢" parent="floormap_floormap01" x="284" y="208" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room07/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478181" style="floormap_common_style_mapspot" tooltip="ï½³ï½«ï½°ï½¸ï½²ï¾ï½¸ï¾›ï½°ï½¾ï¾žï½¯ï¾„" parent="floormap_floormap01" x="459" y="111" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room08/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478182" style="floormap_common_style_mapspot" tooltip="æ´—é¢å®¤" parent="floormap_floormap01" x="341" y="175" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room09/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478183" style="floormap_common_style_mapspot" tooltip="ã‚­ãƒƒãƒãƒ³" parent="floormap_floormap02" x="391" y="156" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room10/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478184" style="floormap_common_style_mapspot" tooltip="ãƒ€ã‚¤ãƒ‹ãƒ³ã‚°" parent="floormap_floormap02" x="303" y="159" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room11/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478185" style="floormap_common_style_mapspot" tooltip="ãƒ‘ãƒ³ãƒˆãƒªãƒ¼" parent="floormap_floormap02" x="434" y="109" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room12/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map03_spot1478186" style="floormap_common_style_mapspot" tooltip="LDKãƒ­ãƒ•ãƒˆ" parent="floormap_floormap03" x="374" y="199" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room13/tour.xml, map03); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map03_spot1478187" style="floormap_common_style_mapspot" tooltip="æ´‹å®¤ãƒ­ãƒ•ãƒˆ" parent="floormap_floormap03" x="537" y="207" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room14/tour.xml, map03); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1487510" style="floormap_common_style_mapspot" tooltip="ãƒ‘ã‚¦ãƒ€ãƒ¼ãƒ«ãƒ¼ãƒ " parent="floormap_floormap01" x="344" y="123" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room15/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1496246_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="88" y="185" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/intro/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478174_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="207" y="126" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room01/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478175_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="304" y="203" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room02/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478176_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="304" y="119" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room03/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478177_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="520" y="138" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room04/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478178_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="525" y="160" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room05/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478179_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="284" y="163" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room06/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478180_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="284" y="208" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room07/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478181_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="459" y="111" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room08/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1478182_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="341" y="175" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room09/tour.xml, map01); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478183_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="391" y="156" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room10/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478184_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="303" y="159" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room11/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map02_spot1478185_vr" style="floormap_common_style_mapspot" parent="floormap_floormap02_vr" x="434" y="109" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room12/tour.xml, map02); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map03_spot1478186_vr" style="floormap_common_style_mapspot" parent="floormap_floormap03_vr" x="374" y="199" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room13/tour.xml, map03); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map03_spot1478187_vr" style="floormap_common_style_mapspot" parent="floormap_floormap03_vr" x="537" y="207" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room14/tour.xml, map03); ws_send_onclick_action();" />
+
+    <layer name="floormap_floorspot_map01_spot1487510_vr" style="floormap_common_style_mapspot" parent="floormap_floormap01_vr" x="344" y="123" zorder="2" onclick="floormap_loadscene(%FIRSTXML%/panos/room15/tour.xml, map01); ws_send_onclick_action();" />
+
+</krpano>

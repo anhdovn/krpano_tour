@@ -1,0 +1,380 @@
+﻿<krpano version="1.19" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+	<include url="plugins/showtext.xml" />
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings 
+		maps="false" 
+		maps_type="google" 
+		maps_bing_api_key="" 
+		maps_google_api_key="" 
+		maps_zoombuttons="false" 
+		gyro="true" webvr="true" 
+		webvr_gyro_keeplookingdirection="false" 
+		webvr_prev_next_hotspots="true" 
+		littleplanetintro="false" 
+		title="true" 
+		thumbs="true" 
+		thumbs_width="120" 
+		thumbs_height="80" 
+		thumbs_padding="10" 
+		thumbs_crop="0|40|240|160" 
+		thumbs_opened="false" 
+		thumbs_text="false" 
+		thumbs_dragging="true" 
+		thumbs_onhoverscrolling="false" 
+		thumbs_scrollbuttons="false" 
+		thumbs_scrollindicator="false" 
+		thumbs_loop="false" 
+		tooltips_buttons="false" 
+		tooltips_thumbs="false" 
+		tooltips_hotspots="false" 
+		tooltips_mapspots="false" 
+		deeplinking="false" 
+		loadscene_flags="MERGE" 
+		loadscene_blend="ZOOMBLEND(1.2, 1.2, easeInOutSine)" 
+		loadscene_blend_prev="ZOOMBLEND(1.2, 1.2, easeInOutSine)" 
+		loadscene_blend_next="ZOOMBLEND(1.2, 1.2, easeInOutSine)" 
+		loadingtext="" 
+		layout_width="100%" 
+		layout_maxwidth="814" 
+		controlbar_width="-24" 
+		controlbar_height="40" 
+		controlbar_offset="20" 
+		controlbar_offset_closed="-40" 
+		controlbar_overlap.no-fractionalscaling="10" 
+		controlbar_overlap.fractionalscaling="0" 
+		design_skin_images="vtourskin.png" 
+		design_bgcolor="0x2D3E50" 
+		design_bgalpha="0.8" 
+		design_bgborder="0" 
+		design_bgroundedge="1" 
+		design_bgshadow="0 4 10 0x000000 0.3" 
+		design_thumbborder_bgborder="3 0xFFFFFF 1.0" 
+		design_thumbborder_padding="2" 
+		design_thumbborder_bgroundedge="0" 
+		design_text_css="color:#FFFFFF; font-family:Arial;" 
+		design_text_shadow="1" 
+	/>
+	
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+	<!-- TEXTSTYLE -->
+	<textstyle name="hostpot_textstyle"
+		origin="cursor"
+		edge="bottom"
+		xoffset="0"
+		yoffset="-30"
+		fadeintime="0.0"
+		showtime="0.1"
+		fadetime="0.0"
+		font="Times"
+		fontsize="13.0"
+		bold="false"
+		italic="false"
+		textcolor="0xffffff"
+		textalign="none"
+		padding="1"
+		css=""
+		width=""
+		height=""
+		vcenter=""
+		background="false"
+		backgroundcolor="0xFFFFFF"
+		backgroundalpha="1.0"
+		border="false"
+		bordercolor="0x000000"
+		borderalpha="1.0"
+		borderwidth="1.0"
+		roundedge="0"
+		shadow="0.0"
+		shadowrange="4.0"
+		shadowangle="45"
+		shadowcolor="0x000000"
+		shadowalpha="1.0"
+		textshadow="0.0"
+		textshadowrange="4.0"
+		textshadowangle="45"
+		textshadowcolor="0x000000"
+		textshadowalpha="1.0"
+		alpha="1.0"
+		parent=""
+		noclip="true"
+	/>
+	<textstyle name="mapspot_textstyle"
+		origin="cursor"
+		edge="bottom"
+		xoffset="0"
+		yoffset="-7"
+		fadeintime="0.0"
+		showtime="0.1"
+		fadetime="0.0"
+		font="Times"
+		fontsize="13.0"
+		bold="false"
+		italic="false"
+		textcolor="0xffffff"
+		textalign="none"
+		padding="7"
+		css=""
+		width=""
+		height=""
+		vcenter=""
+		background="true"
+		backgroundcolor="0x222222"
+		backgroundalpha="1.0"
+		border="false"
+		bordercolor="0x000000"
+		borderalpha="1.0"
+		borderwidth="1.0"
+		roundedge="4"
+		shadow="0.0"
+		shadowrange="4.0"
+		shadowangle="45"
+		shadowcolor="0x000000"
+		shadowalpha="1.0"
+		textshadow="0.0"
+		textshadowrange="4.0"
+		textshadowangle="45"
+		textshadowcolor="0x000000"
+		textshadowalpha="1.0"
+		alpha="1.0"
+		parent=""
+		noclip="true"
+	/>
+
+	<!-- startup action - load the first scene -->
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+		showlog();
+		floormap_init();
+	</action>
+
+	<!-- load the first scene on startup -->
+	<!-- <action name="startup" autorun="onstart">
+		loadscene(scene_pano, null, MERGE);
+	</action> -->
+
+	<!-- **************** FLOORMAP ********************** -->
+	<action name="floormap_init">
+		set(active_map, 01);
+		set(floormap_mapselect_selected_active, floormap_mapselect_map01_mapselected);
+		set(floormap_floormap_active, floormap_floormap01)
+	</action>
+	<!-- map select -->
+	<layer name="floormap_mapselect_map01_mapunselect" url="%FIRSTXML%/floormap/image_select/map01.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="124" y="8" scale="0.44" onclick="floormap_open_active_floormap('01');" vr="true" zorder="4" />
+
+	<layer name="floormap_mapselect_map02_mapunselect" url="%FIRSTXML%/floormap/image_select/map02.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="150" y="8" scale="0.44" onclick="floormap_open_active_floormap('02');" vr="true" zorder="4" />
+
+	<layer name="floormap_mapselect_map03_mapunselect" url="%FIRSTXML%/floormap/image_select/map03.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="176" y="8" scale="0.44" onclick="floormap_open_active_floormap('03');" vr="true" zorder="4" />
+
+	<layer name="floormap_mapselect_map01_mapselected" url="%FIRSTXML%/floormap/image_select/map01_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="124" y="8" scale="0.44" onclick="" vr="true" visible="true" enabled="false" zorder="4" />
+
+	<layer name="floormap_mapselect_map02_mapselected" url="%FIRSTXML%/floormap/image_select/map02_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="150" y="8" scale="0.44" onclick="" vr="true" visible="false" enabled="false" zorder="4" />
+
+	<layer name="floormap_mapselect_map03_mapselected" url="%FIRSTXML%/floormap/image_select/map03_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="176" y="8" scale="0.44" onclick="" vr="true" visible="false" enabled="false" zorder="4" />
+
+	<floormap_next name="next01" value="02" />
+	<floormap_next name="next02" value="03" />
+	<floormap_next name="next03" value="01" />
+	<action name="floormap_open_active_floormap">
+		for(set(i,0), i LT layer.count, inc(i), 
+			indexoftxt(floormap_mapselect, get(layer[get(i)].name), '_mapselected');
+			if(floormap_mapselect GT -1, set(layer[get(i)].visible, false););
+
+			indexoftxt(floormap_floormap, get(layer[get(i)].name), 'floormap_floormap');
+			if(floormap_floormap GT -1, set(layer[get(i)].visible, false););
+		); 
+		
+		set(active_map, %1);
+		txtadd(floormap_mapselect_selected_active, 'floormap_mapselect_map', get(active_map), '_mapselected');
+		set(layer[get(floormap_mapselect_selected_active)].visible, true);
+		txtadd(floormap_floormap_active, 'floormap_floormap', get(active_map));
+		set(layer[get(floormap_floormap_active)].visible, true);
+
+		set(layer[button_floormap_scale].parent, get(floormap_floormap_active));
+	</action>
+
+	<!-- the map image -->
+
+	<layer name="floormap_floormap01" url="%FIRSTXML%/floormap/image/floormap01.png" x="8" y="38" keep="true" handcursor="false" capture="false" align="lefttop" scale="0.35" scalechildren="true" onclick="" visible="true" />
+	<layer name="floormap_floormap02" url="%FIRSTXML%/floormap/image/floormap02.png" x="8" y="38" keep="true" handcursor="false" capture="false" align="lefttop" scale="0.35" scalechildren="true" onclick="" visible="false" />
+	<layer name="floormap_floormap03" url="%FIRSTXML%/floormap/image/floormap03.png" x="8" y="38" keep="true" handcursor="false" capture="false" align="lefttop" scale="0.35" scalechildren="true" onclick="" visible="false" />
+
+
+	<!-- the map spots -->
+	<style name="mapspot" keep="true" url="%FIRSTXML%/floormap/image_icon/camicon.png" align="lefttop" edge="center" scale.mobile="2" />
+	<layer name="floormap_floorspot_map01_spot01" parent="floormap_floormap01" onhover="showtext(scene01, mapspot_textstyle)" style="mapspot" x="70" y="200" zorder="2" onclick="mapspot_loadscene(scene01_map01);" />
+	<layer name="floormap_floorspot_map01_spot02" parent="floormap_floormap01" onhover="showtext(scene02, mapspot_textstyle)" style="mapspot" x="280" y="210" zorder="2" onclick="mapspot_loadscene(scene02_map01);" />
+	<layer name="floormap_floorspot_map01_spot03" parent="floormap_floormap01" onhover="showtext(scene03, mapspot_textstyle)" style="mapspot" x="280" y="160" zorder="2" onclick="mapspot_loadscene(scene03_map01);" />
+
+	<!-- action for loading the scene when clicking on the map spots -->
+	<action name="mapspot_loadscene">
+		loadscene(%1, null, MERGE, ZOOMBLEND(1.2, 1.2, easeInOutSine));
+	</action>
+
+	<!-- active spot image (overlays the normal spot) -->
+	<layer name="activespot" url="%FIRSTXML%/floormap/image_icon/camicon_red.png" keep="true" align="lefttop" zorder="3" scale.mobile="2" />
+
+	<!-- radar layer (overlays the normal spot too, but is behind the activespot image) -->
+	<layer name="radar" keep="true" url.html5="%FIRSTXML%/plugins/radar_source.js" align="center" zorder="1" scale.mobile="1.5" fillalpha="0.5" fillcolor="0x333333" linewidth="1.0" linecolor="0xff3366" linealpha="0.5" />
+
+	<!-- button scale map -->
+	<layer name="button_floormap_scale" parent="floormap_floormap01" url="%FIRSTXML%/floormap/image_icon/button_floormap_scale_up.jpg" keep="true" capture="false" alpha="1.0" alpha.mobile="0.0" align="rightbottom" scale="1.3" vr="true" onclick="floormap_scale_up();" zorder="4" />
+	
+	<!-- map opening - scale the map up to 100% (or smaller if the screen is too small) -->
+	<action name="floormap_scale_up">
+		set(layer[get(name)].onclick, floormap_scale_down(); );
+		set(layer[get(name)].url, "%FIRSTXML%/floormap/image_icon/button_floormap_scale_down.jpg" );
+		set(layer[get(name)].scale, 0.8 );
+		set(bigscale,0.7);
+		if(layer[get(parent)].imagewidth GT stagewidth, div(bigscale, stagewidth, layer[get(parent)].imagewidth); );
+		for(set(i,0), i LT layer.count, inc(i), 
+			indexoftxt(floormap_floormap, get(layer[get(i)].name), 'floormap_floormap');
+			if(floormap_floormap GT -1, tween(layer[get(i)].scale, get(bigscale)););
+		);
+	</action>
+
+	<!-- map closing - scale the map back to 0.35 of its image pixelsize -->
+	<action name="floormap_scale_down">
+		set(layer[get(name)].onclick, floormap_scale_up(); );
+		set(layer[get(name)].url, "%FIRSTXML%/floormap/image_icon/button_floormap_scale_up.jpg" );
+		set(layer[get(name)].scale, 1.3 );
+		for(set(i,0), i LT layer.count, inc(i), 
+			indexoftxt(floormap_floormap, get(layer[get(i)].name), 'floormap_floormap');
+			if(floormap_floormap GT -1, tween(layer[get(i)].scale, 0.35););
+		);
+	</action>
+
+	<!-- button open, close map (top left) -->
+	<layer name="floormap_button_floormap_toogle" url="%FIRSTXML%/floormap/image_icon/button_floormap_close.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="8" y="8" scale="0.44" onclick="floormap_close_floormap();" vr="true" visible="true" zorder="4" />
+
+	<action name="floormap_open_floormap">
+		set(layer[floormap_button_floormap_toogle].onclick, floormap_close_floormap(); );
+		set(layer[floormap_button_floormap_toogle].url, "%FIRSTXML%/floormap/image_icon/button_floormap_close.jpg");
+		set(layer[get(floormap_floormap_active)].visible, true);
+		for(set(i,0), i LT layer.count, inc(i), 
+			indexoftxt(floormap_mapselect_all, get(layer[get(i)].name), '_mapunselect');
+			if(floormap_mapselect_all GT -1, set(layer[get(i)].visible, true););
+		);
+		set(layer[get(floormap_mapselect_selected_active)].visible, true);
+	</action>
+	<action name="floormap_close_floormap">
+		set(layer[floormap_button_floormap_toogle].onclick, floormap_open_floormap(); );
+		set(layer[floormap_button_floormap_toogle].url, "%FIRSTXML%/floormap/image_icon/button_floormap_open.jpg");
+		set(layer[get(floormap_floormap_active)].visible, false);
+		for(set(i,0), i LT layer.count, inc(i), 
+			indexoftxt(floormap_mapselect_all, get(layer[get(i)].name), 'floormap_mapselect');
+			if(floormap_mapselect_all GT -1, set(layer[get(i)].visible, false););
+		);
+
+	</action>
+
+
+	<!-- **************** ALL SCENES ******************** -->
+	<scene name="scene01_map01" onstart="updateradar();" title="scene01_map01" havevrimage="true" thumburl="panos/scene01_map01/thumb.jpg" lat="" lng="" heading="">
+		<action name="updateradar">
+			set(layer[activespot].parent, floormap_floorspot_map01_spot01);
+			set(layer[radar].parent, floormap_floorspot_map01_spot01);
+			set(layer[radar].heading, 10);
+		</action>
+		<view hlookat="0.000" vlookat="0.000" fovtype="MFOV" fov="135.214" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/scene01_map01/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="1280" tiledimageheight="1280">
+				<cube url="panos/scene01_map01/%s/l2/%v/l2_%s_%v_%h.jpg" />
+			</level>
+			<level tiledimagewidth="640" tiledimageheight="640">
+				<cube url="panos/scene01_map01/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+		</image>
+
+		<image if="webvr.isenabled">
+			<cube url="panos/scene01_map01/vr/pano_%s.jpg" />
+		</image>
+		<hotspot name="hostspot01_map01" onhover="showtext(scene02_map01, hostpot_textstyle)" style="skin_hotspotstyle" ath="-0.828" atv="-4.852" linkedscene="scene02_map01" />
+
+	</scene>
+	<scene name="scene02_map01" title="scene02_map01" onstart="updateradar();" thumburl="panos/scene02_map01/thumb.jpg" lat="" lng="" heading="">
+		<action name="updateradar">
+			set(layer[activespot].parent, floormap_floorspot_map01_spot02);
+			set(layer[radar].parent, floormap_floorspot_map01_spot02);
+			set(layer[radar].heading, -180);
+		</action>
+		<view hlookat="-0.648" vlookat="2.096" fovtype="MFOV" fov="139.545" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/scene02_map01/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512">
+			<level tiledimagewidth="2048" tiledimageheight="2048">
+				<cube url="panos/scene02_map01/%s/l2/%v/l2_%s_%v_%h.jpg" />
+			</level>
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/scene02_map01/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+		</image>
+		<hotspot name="hostspot02_map01" onhover="showtext(scene01_map01, hostpot_textstyle)" style="skin_hotspotstyle" ath="-5.785" atv="9.134" linkedscene="scene01_map01" />
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="93.647" atv="49.283" linkedscene="scene03_map01" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="-172.276" atv="34.380" rotate="-90" linkedscene="scene04_map01" />
+
+	</scene>
+	<scene name="scene03_map01" title="scene03_map01" onstart="updateradar();" havevrimage="true" thumburl="panos/scene03_map01/thumb.jpg" lat="" lng="" heading="">
+		<action name="updateradar">
+			set(layer[activespot].parent, floormap_floorspot_map01_spot03);
+			set(layer[radar].parent, floormap_floorspot_map01_spot03);
+			set(layer[radar].heading, 90);
+		</action>
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/scene03_map01/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="2048" tiledimageheight="2048">
+				<cube url="panos/scene03_map01/%s/l2/%v/l2_%s_%v_%h.jpg" />
+			</level>
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/scene03_map01/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+		</image>
+
+		<image if="webvr.isenabled">
+			<cube url="panos/scene03_map01/vr/pano_%s.jpg" />
+		</image>
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="0.117" atv="48.384" rotate="-90" linkedscene="scene02_map01" />
+
+	</scene>
+	<scene name="scene04_map01" title="scene04_map01" onstart="" havevrimage="true" thumburl="panos/scene04_map01/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/scene04_map01/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="2048" tiledimageheight="2048">
+				<cube url="panos/scene04_map01/%s/l2/%v/l2_%s_%v_%h.jpg" />
+			</level>
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/scene04_map01/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+		</image>
+
+		<image if="webvr.isenabled">
+			<cube url="panos/scene04_map01/vr/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+</krpano>

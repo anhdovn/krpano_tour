@@ -1,0 +1,17 @@
+<krpano>
+    <layer name="floormap_mapselect_map01" url="image_select/map01.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="124" y="8" scale="0.44" onclick="floormap_open_floormap('01'); ws_send_onclick_action(); create_action_log(,, 'move_floormap_page_to_01');" vr="true" visible="false" zorder="4" />
+
+    <layer name="floormap_mapselect_map02" url="image_select/map02.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="150" y="8" scale="0.44" onclick="floormap_open_floormap('02'); ws_send_onclick_action(); create_action_log(,, 'move_floormap_page_to_02');" vr="true" visible="false" zorder="4" />
+
+    <layer name="floormap_mapselect_map03" url="image_select/map03.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="176" y="8" scale="0.44" onclick="floormap_open_floormap('03'); ws_send_onclick_action(); create_action_log(,, 'move_floormap_page_to_03');" vr="true" visible="false" zorder="4" />
+
+    <layer name="floormap_mapselect_map01_selected" url="image_select/map01_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="124" y="8" scale="0.44" onclick="" vr="true" visible="false" enabled="false" zorder="4" />
+
+    <layer name="floormap_mapselect_map02_selected" url="image_select/map02_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="150" y="8" scale="0.44" onclick="" vr="true" visible="false" enabled="false" zorder="4" />
+
+    <layer name="floormap_mapselect_map03_selected" url="image_select/map03_selected.jpg" keep="true" capture="false" alpha="1.0" align="lefttop" x="176" y="8" scale="0.44" onclick="" vr="true" visible="false" enabled="false" zorder="4" />
+
+    <floormap_next name="next01" value="02" />
+    <floormap_next name="next02" value="03" />
+    <floormap_next name="next03" value="01" />
+</krpano>

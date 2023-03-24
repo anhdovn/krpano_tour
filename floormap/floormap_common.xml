@@ -1,0 +1,112 @@
+<krpano>
+    <!-- メインのレーダー -->
+    <layer name="floormap_common_radar" keep="true" url.html5="../plugins/radar_source.js" align="center" zorder="1" scale.mobile="1.12" fillalpha="0.5" fillcolor="0x333333" linewidth="1.0" linecolor="0xff3366" linealpha="0.5" editmode="true" vr="true" visible="false" />
+    <!-- VR用のレーダー -->
+    <layer name="floormap_common_radar_vr" keep="true" url.html5="../plugins/radar_source.js" align="center" zorder="1" scale.mobile="1.12" fillalpha="0.5" fillcolor="0x333333" linewidth="1.0" linecolor="0xff3366" linealpha="0.5" editmode="true" vr="true" visible="false" />
+    <!-- フロアマップの上に表示されるツールチップ -->
+    <layer name="floormap_common_floormap_tooltip" keep="true" vr="true" zorder="1002" url="../plugins/textfield.swf" parent="STAGE" visible="false" alpha="0" enabled="false" align="lefttop" edge="bottom" oy="-5" ox="0" background="true" backgroundcolor="0x222222" backgroundalpha="1.0" border="false" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="4" padding="6 8" shadow="0.0001" shadowrange="4.0" shadowangle="45" shadowcolor="0xFFFFFF" shadowalpha="0.3" css="text-align:center; color:#FFFFFF; font-family:Open Sans, sans-serif; font-weight:normal; font-size:12px;" html="" />
+    <action name="floormap_init"> trace("[action] floormap_init"); set(floormap_gg_current_floormap, "01"); set(floormap_gg_current_activespot, null); set(floormap_gg_next_floormap, "02"); set(floormap_gg_flag_floormap_is_open, false); set(floormap_gg_flag_floormap_is_zooming, false); set(floormap_gg_flag_is_vr_mode, false); set(floormap_gg_mapselect_prefix, "floormap_mapselect_"); set(floormap_gg_mapselect_map_prefix, "floormap_mapselect_map"); set(floormap_gg_map_prefix, "floormap_floormap"); set(floormap_gg_mapspot_prefix, "floormap_floorspot"); set(floormap_gg_floormap_init_done, true); </action>
+    <action name="floormap_loadscene"> trace("[action] floormap_loadscene"); trace(%1); changepano( loadpanoscene(%1, 0, null, NOPREVIEW|MERGE|KEEPVIEW|KEEPMOVING, BLEND(1)); ); create_action_log(,, 'move_to_another_scene_from_floormap'); </action>
+    <!-- VRモード用の部分、アクティブスポットもVRモード表示必要、VRモードの時でマップが表示の時は、以下表示、それ以外は非表示みたいなことができないか？？また、マップのスケールは０．２程度がちょうど良いからそれも変更が必要。VRモードの時に一括して表示をうまくやる関数の作成の検討が必要？将来のリアルタイムの一緒に展示を見る、というやり方を含めて -->
+    <action name="floormap_enter_vr">
+        trace("[action] floormap_enter_vr"); set(floormap_gg_flag_is_vr_mode,true); floormap_update_floormap_status();
+        <!-- VRの方のアクティブスポットだけ更新 -->
+        if(floormap_gg_current_activespot == null, set(layer[floormap_common_radar_activespot_vr].visible, false); set(layer[floormap_common_radar_vr].visible, false); , set(layer[floormap_common_radar_activespot_vr].visible, true); set(layer[floormap_common_radar_vr].visible, true); );
+    </action>
+    <action name="floormap_exit_vr"> trace("[action] floormap_exit_vr"); set(floormap_gg_flag_is_vr_mode, false); floormap_update_floormap_status(); </action>
+    <action name="floormap_update_floormap_status"> trace("[action] floormap_update_floormap_status"); if(floormap_gg_flag_floormap_is_open, floormap_open_floormap() , floormap_close_floormap() ); </action>
+    <action name="floormap_common_floormap_scale_up">
+        trace("[action] floormap_common_floormap_scale_up"); create_action_log(,, 'scale_up_floormap'); set(anim, %1); if(anim === null, set(anim, true)); set(floormap_gg_flag_floormap_is_zooming, true); if(floormap_gg_flag_is_vr_mode, set(floormap_zoom_multiplier,0.2); , set(floormap_zoom_multiplier,0.7); );
+        <!-- floormap_floormap*を拡大 -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_map_prefix)); if(ll_found_index GT -1,
+        <!-- floormap_map* -->
+        set(ll_name,get(layer[get(i)].name)); if(anim, tween(layer[get(ll_name)].scale, get(floormap_zoom_multiplier), 0.5, easeInBack); ,
+        <!-- set(layer[get(ll_name)].scale, get(floormap_zoom_multiplier)); これだと動かなかったのでtimeを0にする -->
+        tween(layer[get(ll_name)].scale, get(floormap_zoom_multiplier), 0, easeInBack); ); ); ); set(layer[floormap_common_button_floormap_scale].url, "%FIRSTXML%/floormap/image_icon/button_floormap_scale_down.jpg"); tween(layer[floormap_common_button_floormap_scale].scale, get(floormap_zoom_multiplier), 0.5, easeInBack); set(layer[floormap_common_button_floormap_scale].onclick, floormap_common_floormap_scale_down(););
+    </action>
+    <action name="floormap_common_floormap_scale_down">
+        trace("[action] floormap_common_floormap_scale_down"); create_action_log(,, 'scale_down_floormap'); set(anim, %1); if(anim === null, set(anim, true)); set(floormap_gg_flag_floormap_is_zooming, false); if(floormap_gg_flag_is_vr_mode, set(floormap_zoom_multiplier,0.2); , set(floormap_zoom_multiplier,0.35); );
+        <!-- floormap_floormap*を拡大 -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_map_prefix)); if(ll_found_index GT -1,
+        <!-- floormap_map* -->
+        set(ll_name,get(layer[get(i)].name)); if(anim, tween(layer[get(ll_name)].scale,get(floormap_zoom_multiplier), 0.5, easeInBack); ,
+        <!-- set(layer[get(ll_name)].scale, get(floormap_zoom_multiplier)); これだと動かなかったのでtimeを0にする -->
+        tween(layer[get(ll_name)].scale, get(floormap_zoom_multiplier), 0, easeInBack); ); ); ); set(layer[floormap_common_button_floormap_scale].url, "%FIRSTXML%/floormap/image_icon/button_floormap_scale_up.jpg"); tween(layer[floormap_common_button_floormap_scale].scale, 1.3, 0.5, easeInBack); set(layer[floormap_common_button_floormap_scale].onclick, floormap_common_floormap_scale_up(););
+    </action>
+    <!-- フロアマップを表示する -->
+    <action name="floormap_open_floormap">
+        trace("[action] floormap_open_floormap"); create_action_log(,, 'open_floormap');
+        <!-- 足元のグローバルメニューを連動させる -->
+        global_menu_control_floormap_open(); set(target, %1);
+        <!-- 表示するmapの番号 ie."01"とかの文字列を引数で受け取る（実際のmapの名前はfloormap_floormap01とか） -->
+        <!-- アクションの引数が省略されてたときはグローバル変数から取ってくる -->
+        if(target===null, set(target,get(floormap_gg_current_floormap)); trace("[trace] floormap_open_floormap target is null, open current floormap : ",loormap_gg_current_floormap); );
+        <!-- floormap_next[]という配列をみてnext用のマップを取得 -->
+        txtadd(ll_keyname, "next",get(target)); set(next, get(floormap_next[get(ll_keyname)].value)); set(floormap_gg_flag_floormap_is_open,true); if(floormap_gg_flag_floormap_is_zooming, floormap_common_floormap_scale_up(false); , floormap_common_floormap_scale_down(false); );
+        <!-- 選択状態にするlayerの名前 -->
+        txtadd(ll_floormap_mapselect_target, get(floormap_gg_mapselect_map_prefix), get(target)); txtadd(ll_floormap_mapselect_selected_target,get(floormap_gg_mapselect_map_prefix), get(target),"_selected"); txtadd(ll_floormap_map_target,get(floormap_gg_map_prefix), get(target));
+        <!-- floormap_floormap01とか -->
+        txtadd(ll_floormap_map_target_vr,get(floormap_gg_map_prefix), get(target),"_vr");
+        <!-- floormap_floormap01_vrとか -->
+        <!-- グローバル変数に格納 -->
+        set(floormap_gg_current_floormap, get(target)); set(floormap_gg_next_floormap, get(next));
+        <!-- メニューの表示状態を更新 -->
+        if(floormap_gg_flag_is_vr_mode,
+        <!-- VRモードのときはメニューのlayerを全部消す -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_mapselect_map_prefix)); set(ll_name,get(layer[get(i)].name)); if(ll_found_index GT -1, set(layer[get(ll_name)].visible, "false"); ) ) ,
+        <!-- 非VRモードのときは表示しているやつは_selectedを表示する -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_mapselect_map_prefix)); if(ll_found_index GT -1, indexoftxt(ll_found_index, get(layer[get(i)].name), "_selected"); if(ll_found_index GT -1,
+        <!-- selectedのほう -->
+        set(ll_name,get(layer[get(i)].name)); if(ll_floormap_mapselect_selected_target == ll_name, set(layer[get(ll_name)].visible, "true"); , set(layer[get(ll_name)].visible, "false"); ); ,
+        <!-- selectedじゃないほう -->
+        set(ll_name,get(layer[get(i)].name)); if(ll_floormap_mapselect_target == ll_name, set(layer[get(ll_name)].visible, "false"); , set(layer[get(ll_name)].visible, "true"); ); ); ); ); );
+        <!-- マップの表示状態 -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_map_prefix)); if(ll_found_index GT -1,
+        <!-- floormap_map* -->
+        indexoftxt(ll_found_index, get(layer[get(i)].name), "_vr"); if(ll_found_index GT -1,
+        <!-- floormap_map*_vrのほう -->
+        set(ll_name,get(layer[get(i)].name)); if(ll_floormap_map_target_vr == ll_name, if(floormap_gg_flag_is_vr_mode, trace("vr is on");
+        <!-- VRモードの場合はフロアマップをじんわり表示 -->
+        set(layer[get(ll_name)].visible, true); set(layer[get(ll_name)].alpha, 0.0); tween(layer[get(ll_name)].alpha, 0.9, 0.5, defalt); , trace("vr is off");
+        <!-- VRモードじゃないので非表示 -->
+        set(layer[get(ll_name)].visible, "false"); ); ,
+        <!-- 違うのは非表示 -->
+        set(layer[get(ll_name)].visible, "false"); ) ,
+        <!-- floormap_map* (vrじゃないほう) -->
+        set(ll_name,get(layer[get(i)].name)); if(ll_floormap_map_target == ll_name,
+        <!-- 表示するフロアマップをじんわり表示 -->
+        set(layer[get(ll_name)].visible, true); set(layer[get(ll_name)].alpha, 0.0); tween(layer[get(ll_name)].alpha, 0.9, 0.5, defalt); if(floormap_gg_flag_is_vr_mode,
+        <!-- VRモードの場合は表示ポジションを調整 -->
+        set(layer[get(ll_name)].align, centertop); set(layer[get(ll_name)].edge, centertop); set(layer[get(ll_name)].x, 0); set(layer[get(ll_name)].ox, -234); set(layer[get(ll_name)].y, 6); ,
+        <!-- 普通の場合は場合は表示を元に -->
+        set(layer[get(ll_name)].align, lefttop); set(layer[get(ll_name)].edge, lefttop); set(layer[get(ll_name)].x, 8); set(layer[get(ll_name)].ox, 0); set(layer[get(ll_name)].y, 38); ); ,
+        <!-- 違うのは非表示 -->
+        set(layer[get(ll_name)].visible, "false"); ); ); ); );
+        <!-- まわりのUI -->
+        if(floormap_gg_current_activespot == null, set(layer[floormap_common_radar_activespot].visible, false); set(layer[floormap_common_radar].visible, false); set(layer[floormap_common_radar_activespot_vr].visible, false); set(layer[floormap_common_radar_vr].visible, false); , set(layer[floormap_common_radar_activespot].visible, true); set(layer[floormap_common_radar].visible, true); set(layer[floormap_common_radar_activespot_vr].visible, true); set(layer[floormap_common_radar_vr].visible, true); ); if(floormap_gg_flag_is_vr_mode,
+        <!-- VRモードのときはフロアマップボタン隠す -->
+        set(layer[floormap_common_button_floormap_open].visible, false); set(layer[floormap_common_button_floormap_close].visible, false); , set(layer[floormap_common_button_floormap_open].visible, false); set(layer[floormap_common_button_floormap_close].visible, true); ); set(hotspot[mapvisible_icon].visible, false); set(hotspot[mapnonvisible_icon].visible, true); set(hotspot[mapnext_icon].visible, true); set(layer[floormap_common_button_floormap_scale].visible, true); set(layer[floormap_common_button_floormap_scale].parent, get(ll_floormap_map_target)); trace("[action] floormap_open_floormap done");
+    </action>
+    <action name="floormap_close_floormap">
+        trace("[action] floormap_close_floormap"); create_action_log(,, 'close_floormap'); set(floormap_gg_flag_floormap_is_open,false);
+        <!-- 足元のグローバルメニューを連動させる -->
+        global_menu_control_floormap_close();
+        <!-- まずはmapselectを非表示 -->
+        <!-- floormap_mapselect_*を根こそぎ非表示 -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_mapselect_map_prefix)); if(ll_found_index GT -1, set(ll_name,get(layer[get(i)].name)); set(layer[get(ll_name)].visible, "false"); ); );
+        <!-- マップの表示状態 -->
+        <!-- floormap_floormap*を非表示 -->
+        for(set(i,0), i LT layer.count, inc(i), indexoftxt(ll_found_index, get(layer[get(i)].name), get(floormap_gg_map_prefix)); if(ll_found_index GT -1,
+        <!-- floormap_map* -->
+        set(ll_name,get(layer[get(i)].name)); tween(layer[get(ll_name)].alpha, 0.0, 0.5, default, set(layer[get(ll_name)].visible, false);); ); ); if(floormap_gg_flag_is_vr_mode,
+        <!-- VRモードのときはフロアマップボタンは出さないまま -->
+        set(layer[floormap_common_button_floormap_open].visible, flase); ,
+        <!-- VRモードで無いときはフロアマップボタンを出す -->
+        set(layer[floormap_common_button_floormap_open].visible, true); set(layer[floormap_common_button_floormap_close].visible, false); ); set(hotspot[mapvisible_icon].visible, true); set(hotspot[mapnonvisible_icon].visible, false); set(hotspot[mapnext_icon].visible, false); set(layer[floormap_common_button_floormap_scale].visible, false);
+    </action>
+    <action name="floormap_set_active_spot">
+        <!-- %1 = target spot -->
+        <!-- %2 = heading direction -->
+        trace("[action] floormap_set_active_spot : ",%1); set(target,%1); set(heading,%2); set(floormap_gg_current_activespot,get(target)); trace("[trace] floormap_set_active_spot: floormap_gg_current_activespot : ",floormap_gg_current_activespot); if(target == null, , set(layer[floormap_common_radar].parent, get(target)); set(layer[floormap_common_radar].heading, get(heading)); set(layer[floormap_common_radar_activespot].parent, get(target)); txtadd(target_vr,get(target),"_vr"); set(layer[floormap_common_radar_vr].parent, get(target_vr)); set(layer[floormap_common_radar_vr].heading, get(heading)); set(layer[floormap_common_radar_activespot_vr].parent, get(target_vr)); )
+    </action>
+</krpano>
