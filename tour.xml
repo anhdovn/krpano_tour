@@ -158,7 +158,7 @@
 		loadscene(get(startscene), null, MERGE);
 		if(startactions !== null, startactions() );
 		floormap_init();
-		showlog();
+		<!-- showlog(); -->
 	</action>
 
 	<!-- load the first scene on startup -->
